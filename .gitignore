@@ -138,12 +138,12 @@ GitHub.sublime-settings
 !.vscode/extensions.json 
 .history
 
-#Vue
+# Vue #
 
 .DS_Store
-node_modules
-frontend//dist
-frontend//public
+
+frontend/dist
+frontend/public
 
 # Log files
 frontend/npm-debug.log*
@@ -151,3 +151,4 @@ frontend/yarn-debug.log*
 frontend/yarn-error.log*
 
 # Editor settings
+frontend/node_modules/
