@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from django.http import Http404
 from .models import Product, Category
 
-from .serializers import ProductSerializer
+from .serializers import ProductSerializer, CategorySerializer
 
 class LatestProductsList(APIView):
     def get(self, request, format=None):
