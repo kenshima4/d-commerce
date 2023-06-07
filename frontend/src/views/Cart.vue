@@ -63,6 +63,7 @@ export default {
     },
     methods: {
         removeFromCart(item) {
+            // filter cart items to all != item
             this.cart.items = this.cart.items.filter(i => i.product.id !== item.product.id)
         }
     },
