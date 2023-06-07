@@ -58,6 +58,9 @@ export default {
             errors: []
         }
     },
+    mounted(){
+        document.title = 'Sign Up | d-commerce'
+    },
     methods: {
         submitForm() {
             this.errors = []
@@ -84,7 +87,7 @@ export default {
                     .post("/api/v1/users/", formData)
                     .then(response => {
                         toast({
-                            message: 'Account created, please log in!',
+                            message: 'Account created, please login!',
                             type: 'is-success',
                             dismissible: true,
                             pauseOnHover: true,
@@ -92,7 +95,7 @@ export default {
                             position: 'bottom-right',
                         })
 
-                        this.$router.push('/log-in')
+                        this.$router.push('/login')
                     })
                     .catch(error => {
                         if (error.response) {
