@@ -62,6 +62,7 @@
 
 <script>
 export default {
+  //register all data here
   data() {
     return {
       showMobileMenu: false,
@@ -70,12 +71,15 @@ export default {
       }
     }
   },
+  //before creating anything init store
   beforeCreate() {
     this.$store.commit('initializeStore')
   },
+  //initial state
   mounted(){
     this.cart = this.$store.state.cart
   },
+  //computed values
   computed: {
       cartTotalLength() {
           let totalLength = 0
