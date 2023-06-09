@@ -13,6 +13,8 @@ from rest_framework.response import Response
 from .models import Order, OrderItem
 from .serializers import OrderSerializer, MyOrderSerializer
 
+import os
+
 
 @api_view(['POST'])
 @authentication_classes([authentication.TokenAuthentication])
@@ -21,14 +23,15 @@ def checkout(request):
     serializer = OrderSerializer(data=request.data)
 
     if serializer.is_valid():
-        stripe.api_key = settings.STRIPE_SECRET_KEY
+        stripe.api_key = os.environ['STRIPE_SECRET_KEY']
+       
         paid_amount = sum(item.get('quantity') * item.get('product').price for item in serializer.validated_data['items'])
 
         try:
             charge = stripe.Charge.create(
                 amount=int(paid_amount * 100),
                 currency='USD',
-                description='Charge from Djackets',
+                description='Charge from d-commerce',
                 source=serializer.validated_data['stripe_token']
             )
 
