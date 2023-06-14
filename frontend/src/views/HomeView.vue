@@ -60,7 +60,7 @@ export default {
           console.log(error)
         })
 
-      
+      this.$store.commit('setIsLoading', false)
     }
   },
 }
