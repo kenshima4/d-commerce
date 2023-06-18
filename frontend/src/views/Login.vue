@@ -92,6 +92,11 @@ export default {
                         console.log(JSON.stringify(error))
                     }
                 })
+
+                updateUsername()
+        },
+        updateUsername() {
+            this.$store.commit('setUsername', this.username);
         }
         
         
