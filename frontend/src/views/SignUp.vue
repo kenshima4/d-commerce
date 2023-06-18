@@ -125,13 +125,15 @@ export default {
                         }
                     })
 
-                    this.updateUsername()
+                    this.updateUserName()
             }
         },
+        updateUserName() {
+            this.$store.commit('username', this.username);
+            localStorage.setItem('username', this.username);
+        },
       
-        updateUsername() {
-            this.$store.commit('setUsername', this.username);
-        }
+        
   
     }
 }

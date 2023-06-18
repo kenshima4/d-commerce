@@ -8,15 +8,15 @@ export default createStore({
     isAuthenticated: false,
     token: '',
     isLoading: false,
-    userName: ''
+    username: ''
   },
   getters: {
-      getUserName: state => state.userName
+      getUserName: state => state.username
     
   },
   mutations: {
     setUsername(state, username) {
-      state.userName = username;
+      state.username = username;
     },
     
     initializeStore(state) {

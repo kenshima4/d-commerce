@@ -6,6 +6,10 @@
         </div>
 
         <div class="column is-12">
+            <h4 class="title is-4">@{{ username }}</h4>
+        </div>
+
+        <div class="column is-12">
             <button @click="logout()" class="button is-danger">Log out</button>
         </div>
 
@@ -38,38 +42,48 @@ export default{
             orders: []
         }
     },
+    
     mounted() {
         document.title = 'My account | d-commerce'
 
+        
         this.getMyOrders()
     },
     methods: {
-    logout() {
-        axios.defaults.headers.common["Authorization"] = ""
+    
+        logout() {
+            axios.defaults.headers.common["Authorization"] = ""
 
-        localStorage.removeItem("token")
-        localStorage.removeItem("username")
-        localStorage.removeItem("userid")
+            localStorage.removeItem("token")
+            localStorage.removeItem("username")
+            localStorage.removeItem("userid")
 
-        this.$store.commit('removeToken')
+            this.$store.commit('removeToken')
 
-        this.$router.push('/')
+            this.$router.push('/')
+        },
+        async getMyOrders() {
+            this.$store.commit('setIsLoading', true)
+
+            await axios
+                .get('/api/v1/orders/')
+                .then(response => {
+                    this.orders = response.data
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+
+            this.$store.commit('setIsLoading', false)
+        },
+        
+    
     },
-    async getMyOrders() {
-        this.$store.commit('setIsLoading', true)
-
-        await axios
-            .get('/api/v1/orders/')
-            .then(response => {
-                this.orders = response.data
-            })
-            .catch(error => {
-                console.log(error)
-            })
-
-        this.$store.commit('setIsLoading', false)
+    computed: {
+        username: state => {
+            return localStorage.getItem('username'); // Retrieve the username from local storage
+        }
     }
-}
 }
 
 </script>

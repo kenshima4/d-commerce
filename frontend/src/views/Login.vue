@@ -93,11 +93,13 @@ export default {
                     }
                 })
 
-                updateUsername()
+                this.updateUserName()
         },
-        updateUsername() {
-            this.$store.commit('setUsername', this.username);
-        }
+        updateUserName() {
+            this.$store.commit('username', this.username);
+            localStorage.setItem('username', this.username);
+        },
+        
         
         
     }
