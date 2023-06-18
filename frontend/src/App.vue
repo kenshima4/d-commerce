@@ -38,16 +38,18 @@
           <div class="buttons">
             <template v-if="$store.state.isAuthenticated">
               <router-link to="/my-account" class="button is-light">My account</router-link>
+              
+              <router-link to="/cart" class="button is-success">
+                <span class="icon"><i clas="fas fa-shopping-cart"></i></span>
+                <span>Cart ({{ cartTotalLength }})</span>
+              </router-link>
             </template>
 
             <template v-else>
               <router-link to="/login" class="button is-light">Log in</router-link>
             </template>
 
-            <router-link to="/cart" class="button is-success">
-              <span class="icon"><i clas="fas fa-shopping-cart"></i></span>
-              <span>Cart ({{ cartTotalLength }})</span>
-            </router-link>
+            
           </div>
         </div>
       </div>
