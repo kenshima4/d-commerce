@@ -7,11 +7,18 @@ export default createStore({
     },
     isAuthenticated: false,
     token: '',
-    isLoading: false
+    isLoading: false,
+    username: ''
   },
   getters: {
+      getUserName: state => state.username
+    
   },
   mutations: {
+    setUsername(state, username) {
+      state.username = username;
+    },
+    
     initializeStore(state) {
       if (localStorage.getItem('cart')) {
         state.cart = JSON.parse(localStorage.getItem('cart'))

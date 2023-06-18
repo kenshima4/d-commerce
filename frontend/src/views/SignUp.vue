@@ -15,6 +15,15 @@
                     </div>
 
                     <div class="field">
+                        <label>Email</label>
+                        <div class="control">
+                            <!-- v-model for two-way data binding between template value
+                                 and data property value-->
+                            <input type="email" class="input" v-model="email">
+                        </div>
+                    </div>
+
+                    <div class="field">
                         <label>Password</label>
                         <div class="control">
                             <input type="password" class="input" v-model="password">
@@ -53,6 +62,7 @@ export default {
     data(){
         return {
             username: '',
+            email:'',
             password:'',
             password2: '',
             errors: []
@@ -69,6 +79,9 @@ export default {
                 this.errors.push('The username is missing')
             }
 
+            if (this.email === '') {
+                this.errors.push('The email is missing')
+            }
             if (this.password === '') {
                 this.errors.push('The password is too short')
             }
@@ -80,6 +93,7 @@ export default {
             if (!this.errors.length) {
                 const formData = {
                     username: this.username,
+                    email: this.email,
                     password: this.password
                 }
 
@@ -110,8 +124,17 @@ export default {
                             console.log(JSON.stringify(error))
                         }
                     })
+
+                    this.updateUserName()
             }
-        }
+        },
+        updateUserName() {
+            this.$store.commit('username', this.username);
+            localStorage.setItem('username', this.username);
+        },
+      
+        
+  
     }
 }
 </script>

@@ -92,7 +92,14 @@ export default {
                         console.log(JSON.stringify(error))
                     }
                 })
-        }
+
+                this.updateUserName()
+        },
+        updateUserName() {
+            this.$store.commit('username', this.username);
+            localStorage.setItem('username', this.username);
+        },
+        
         
         
     }
