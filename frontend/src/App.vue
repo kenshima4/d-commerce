@@ -55,9 +55,7 @@
         </div>
       </div>
     </nav>
-  </div>
-
-  <div class="is-loading-bar has-text-centered" v-bind:class="{'is-loading': $store.state.isLoading }">
+    <div class="is-loading-bar has-text-centered" v-bind:class="{'is-loading': $store.state.isLoading }">
     <div class="lds-dual-ring"></div>
   </div>
 
@@ -68,6 +66,10 @@
   <footer class="footer">
     <p class="has-text-centered">Copyright (c) 2021</p>
   </footer>
+  
+</div>
+
+  
 </template>
 
 <script>
