@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework.decorators import api_view
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
@@ -6,12 +5,18 @@ from rest_framework.authtoken.models import Token
 from django.template.loader import render_to_string
 from rest_framework.response import Response
 from rest_framework import status
+from django.middleware.csrf import get_token
+
+from django.views.decorators.csrf import csrf_protect
+from rest_framework import status
+from rest_framework.decorators import api_view
 
 from .serializers import ResetPasswordEmail
 
 @api_view(['POST', 'GET'])
 def reset_password(request):
     if request.method == "POST":
+        return Response("OK", status=status.HTTP_201_CREATED)
         serializer = ResetPasswordEmail(data=request.data)
         if serializer.is_valid():
 
@@ -45,5 +50,3 @@ def reset_password(request):
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    if request.method == "GET":
-        return Response({}, status=status.HTTP_201_CREATED)

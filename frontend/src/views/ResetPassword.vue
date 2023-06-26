@@ -6,7 +6,7 @@
                 <!-- prevent form submit from sending to server -->
                 <form @submit.prevent="submitForm">
                     
-
+                    
                     <div class="field">
                         <label>Email</label>
                         <div class="control">
@@ -35,7 +35,7 @@
 <script>
 import axios from 'axios'
 import { toast } from 'bulma-toast'
-
+import jQuery from 'jquery'
 export default {
     name: 'ResetPassword',
     data(){
@@ -48,85 +48,68 @@ export default {
         document.title = 'Reset Password | d-commerce'
     },
     methods: {
+        // using jQuery
         getCookie(name) {
-            let cookieValue = null;
-
+            var cookieValue = null;
             if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
                     // Does this cookie string begin with the name we want?
                     if (cookie.substring(0, name.length + 1) === (name + '=')) {
                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-
                         break;
                     }
                 }
             }
-
             return cookieValue;
         },
-        
+       
         
         submitForm() {
             this.errors = []
 
-            
-
             if (this.email === '') {
                 this.errors.push('The email is missing')
             }
-            
+
 
             if (!this.errors.length) {
                 const formData = {
                     email: this.email,
                 }
-                const csrftoken = this.getCookie('csrftoken');
-                console.log(" got cookie !!!" + csrftoken)
-                const headers = {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrftoken
-                }
-
-              
+                
                 axios
-                    .post("/api/v1/reset_password/", formData, {headers: headers
-                    })
-                    .then(response => {
-                        toast({
-                            message: 'If you have an account with us, please check your email for the link!',
-                            type: 'is-success',
-                            dismissible: true,
-                            pauseOnHover: true,
-                            position: 'bottom-right',
-                        })
+                .post('/api/v1/accounts/reset_password/')
+                .then((response) => {
+                    toast({
+                    message: 'If you have an account with us, please check your email for the link!',
+                    type: 'is-success',
+                    dismissible: true,
+                    pauseOnHover: true,
+                    position: 'bottom-right',
+                    });
+                })
+                .catch((error) => {
+                    if (error.response) {
+                    for (const property in error.response.data) {
+                        this.errors.push(`${property}: ${error.response.data[property]}`);
+                    }
 
-                        
-                    })
-                    .catch(error => {
-                        if (error.response) {
-                            for (const property in error.response.data) {
-                                this.errors.push(`${property}: ${error.response.data[property]}`)
-                            }
-
-                            console.log(JSON.stringify(error.response.data))
-                        } else if (error.message) {
-                            this.errors.push('Something went wrong. Please try again')
-                            
-                            console.log(JSON.stringify(error))
-                        }
-                    })
+                    console.log(JSON.stringify(error.response.data))
+                    } else if (error.message) {
+                    this.errors.push('Something went wrong. Please try again');
+                    console.log(JSON.stringify(error))
+                    }
+                })
 
             }
-        },
-        
+        }, 
         
       
         
   
-    }
+    },
+   
 }
 </script>

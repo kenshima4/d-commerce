@@ -26,7 +26,26 @@ STRIPE_SECRET_KEY = 'sk_test_51NH4LnIIOIhiNEiGlcpsukLE5pi6Me9zYOhTf1uVP4ux7WgCXy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
+
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8080',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://127.0.0.1:8080',
+]
+
+CSRF_COOKIE_HTTPONLY = False
+
+# SESSION_COOKIE_SAMESITE = 'None'
+# CORS_ALLOW_CREDENTIALS = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_DIR = BASE_DIR / 'emails'
+
 
 
 # Application definition
@@ -49,16 +68,13 @@ INSTALLED_APPS = [
     'email_app'
 ]
 
-CORS_ALLOWED_ORIGINS =[
-    'http://localhost:8000',
-    'http://localhost:8080' #frontend url
-]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
