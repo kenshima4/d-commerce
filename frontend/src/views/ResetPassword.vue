@@ -80,7 +80,7 @@ export default {
                 }
                 
                 axios
-                .post('/api/v1/accounts/reset_password/')
+                .post('/api/v1/accounts/reset_password/', formData)
                 .then((response) => {
                     toast({
                     message: 'If you have an account with us, please check your email for the link!',
@@ -91,16 +91,10 @@ export default {
                     });
                 })
                 .catch((error) => {
-                    if (error.response) {
-                    for (const property in error.response.data) {
-                        this.errors.push(`${property}: ${error.response.data[property]}`);
-                    }
-
-                    console.log(JSON.stringify(error.response.data))
-                    } else if (error.message) {
-                    this.errors.push('Something went wrong. Please try again');
+                   
+                    this.errors.push(error);
                     console.log(JSON.stringify(error))
-                    }
+                    
                 })
 
             }
