@@ -1,5 +1,6 @@
 from rest_framework.decorators import api_view
 from django.core.mail import send_mail
+from django.conf import settings
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.template.loader import render_to_string
@@ -16,7 +17,7 @@ from .serializers import ResetPasswordEmail
 @api_view(['POST', 'GET'])
 def reset_password(request):
     if request.method == "POST":
-        return Response("OK", status=status.HTTP_201_CREATED)
+        
         serializer = ResetPasswordEmail(data=request.data)
         if serializer.is_valid():
 
@@ -37,16 +38,34 @@ def reset_password(request):
                     'username': user,
                     'token': token
                 }
+                
+                subject = 'd-commerce Password Reset'
+                
+                message = create_message(user)
+                
+                email_from = settings.EMAIL_HOST_USER
+                # email_from = "test@example.com"
+                recipient_list = [user.email, ]
+                send_mail( subject=subject,message= message, from_email=email_from, recipient_list=recipient_list)
 
-                send_mail(
-                    'd-commerce Password Reset',
-                    render_to_string('emails/reset_password.txt', context),
-                    'D-COMMERCE and No Reply',
-                    [email],
-                    fail_silently=False,
-                    auth_user=None, auth_password=None, connection=None, html_message=None
-                )
                 serializer.save(token=token, slug=token)
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+def create_message(username):
+    password_reset_link = settings.BASE_URL + '/change_password'
+    
+    message = """
+    Hi {0}, 
+
+    you've requested to reset your password. Please follow this link to reset your password: {1}"
+    
+    Best regards
+    d-commerce team
+    """.format(username, password_reset_link)
+  
+    return message
+
+  
+  
