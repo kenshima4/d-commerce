@@ -6,10 +6,6 @@ from rest_framework.authtoken.models import Token
 from django.template.loader import render_to_string
 from rest_framework.response import Response
 from rest_framework import status
-from django.middleware.csrf import get_token
-
-from django.views.decorators.csrf import csrf_protect
-from rest_framework import status
 from rest_framework.decorators import api_view
 
 from .serializers import ResetPasswordEmail
@@ -31,41 +27,26 @@ def reset_password(request):
             token = Token.objects.get(user=user)
 
             if user:
-
-                # pass the context of things above to send them in an email
-                context = {
-                    'email': email,
-                    'username': user,
-                    'token': token
-                }
-                
                 subject = 'd-commerce Password Reset'
+                link = str(settings.BASE_URL) + '/change_password'
+
+                #get context to pass to templates
+                context = { 'username': user, 'link':link}
+               
+                msg_plain = render_to_string('email_app/email.txt',context)
+                msg_html = render_to_string('email_app/email.html',context)
                 
-                message = create_message(user)
+                recipient_list = [email, ]
+
+                #send mail with both text and html
+                send_mail(subject,msg_plain, html_message=msg_html,from_email=None, recipient_list=recipient_list, fail_silently=False)
                 
-                email_from = settings.EMAIL_HOST_USER
-                # email_from = "test@example.com"
-                recipient_list = [user.email, ]
-                send_mail( subject=subject,message= message, from_email=email_from, recipient_list=recipient_list)
 
                 serializer.save(token=token, slug=token)
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-def create_message(username):
-    password_reset_link = settings.BASE_URL + '/change_password'
-    
-    message = """
-    Hi {0}, 
-
-    you've requested to reset your password. Please follow this link to reset your password: {1}"
-    
-    Best regards
-    d-commerce team
-    """.format(username, password_reset_link)
-  
-    return message
 
 @api_view(['POST'])
 def change_password(request):
