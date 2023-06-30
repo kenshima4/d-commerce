@@ -67,5 +67,17 @@ def create_message(username):
   
     return message
 
-  
-  
+@api_view(['POST'])
+def change_password(request):
+    if request.method == "POST":
+        data = request.data
+
+        # find the user that has that email
+        user = User.objects.get(username=data['username'])
+        
+        password = data["password"]
+
+        user.set_password(password)
+        user.save()
+
+        return Response("Password Changed Successfully", status=status.HTTP_200_OK)

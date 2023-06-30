@@ -10,6 +10,7 @@ import Cart from '../views/Cart.vue'
 import SignUp from '../views/SignUp.vue'
 import Login from '../views/Login.vue'
 import ResetPassword from '../views/ResetPassword.vue'
+import ChangePassword from '../views/ChangePassword.vue'
 import MyAccount from '../views/MyAccount.vue'
 import Checkout from '../views/Checkout.vue'
 import Success from '../views/Success.vue'
@@ -41,6 +42,14 @@ const routes = [
     path: '/reset-password',
     name: 'ResetPassword',
     component: ResetPassword
+  },
+  {
+    path: '/change-password',
+    name: 'ChangePassword',
+    component: ChangePassword,
+    meta:{
+      requireLogin:true
+    }
   },
   {
     path: '/my-account',
