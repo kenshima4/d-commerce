@@ -11,11 +11,13 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from django.urls import reverse
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_URL = 'http://127.0.0.1:8080'
-
+DOMAIN = '127.0.0.1:8080'
+SITE_NAME = 'd-commerce'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -49,6 +51,11 @@ EMAIL_FILE_PATH = BASE_DIR / 'emails'
 
 
 # Application definition
+DJOSER = {
+    'PASSWORD_RESET_CONFIRM_URL': 'api/v1/users/reset_password_confirm/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_RETYPE' : True,
+    'SERIALIZERS': {},
+}
 
 INSTALLED_APPS = [
     'django.contrib.admin',

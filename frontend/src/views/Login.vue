@@ -109,7 +109,6 @@ export default {
                 this.updateUserName()
         },
         updateUserName() {
-            this.$store.commit('username', this.username);
             localStorage.setItem('username', this.username);
         },
         

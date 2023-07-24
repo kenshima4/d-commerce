@@ -2,27 +2,10 @@
     <div class="page-sign-up">
         <div class="columns">
             <div class="column is-4 is-offset-4">
-                <h1 class="title text-center">Sign Up</h1>
+                <h1 class="title text-center">New Password</h1>
                 <!-- prevent form submit from sending to server -->
                 <form @submit.prevent="submitForm">
-                    <div class="field">
-                        <label>Username</label>
-                        <div class="control">
-                            <!-- v-model for two-way data binding between template value
-                                 and data property value-->
-                            <input type="text" class="input" v-model="username">
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label>Email</label>
-                        <div class="control">
-                            <!-- v-model for two-way data binding between template value
-                                 and data property value-->
-                            <input type="email" class="input" v-model="email">
-                        </div>
-                    </div>
-
+                    
                     <div class="field">
                         <label>Password</label>
                         <div class="control">
@@ -43,7 +26,7 @@
 
                     <div class="field">
                         <div class="control">
-                            <button class="button is-dark">Sign up</button>
+                            <button class="button is-dark">Change Password</button>
                         </div>
                     </div>
                 </form>
@@ -58,30 +41,22 @@ import axios from 'axios'
 import { toast } from 'bulma-toast'
 
 export default {
-    name: 'SignUp',
+    name: 'ResetPasswordConfirm',
+    props: ['uid', 'token'],
     data(){
         return {
-            username: '',
-            email:'',
             password:'',
             password2: '',
             errors: []
         }
     },
     mounted(){
-        document.title = 'Sign Up | d-commerce'
+        document.title = 'Reset Password Confirm | d-commerce'
     },
     methods: {
         submitForm() {
             this.errors = []
 
-            if (this.username === '') {
-                this.errors.push('The username is missing')
-            }
-
-            if (this.email === '') {
-                this.errors.push('The email is missing')
-            }
             if (this.password === '') {
                 this.errors.push('The password is too short')
             }
@@ -91,21 +66,29 @@ export default {
             }
 
             if (!this.errors.length) {
-                const formData = {
-                    username: this.username,
-                    email: this.email,
-                    password: this.password
+                
+                const uid = this.uid
+                const token = this.token
+                const new_password = this.password
+                const re_new_password = this.password2
+               
+                const config = {
+                    headers:{
+                        'Content-Type': 'application/json'
+                    }
                 }
-
+               
+                const body = JSON.stringify({ uid, token, new_password, re_new_password })
+                console.log(body)
                 axios
-                    .post("/api/v1/users/", formData)
+                    .post("/api/v1/users/reset_password_confirm/", body, config)
                     .then(response => {
                         toast({
-                            message: 'Account created, please login!',
+                            message: 'Reset password successful, please login!',
                             type: 'is-success',
                             dismissible: true,
                             pauseOnHover: true,
-                            duration: 2000,
+                            duration: 5000,
                             position: 'bottom-right',
                         })
 
@@ -119,17 +102,16 @@ export default {
 
                             console.log(JSON.stringify(error.response.data))
                         } else if (error.message) {
-                            this.errors.push(JSON.stringify(error));
+                            this.errors.push('Something went wrong. Please try again')
+                            
+                            console.log(JSON.stringify(error))
                         }
                     })
 
-                    this.updateUserName()
+                    
             }
         },
-        updateUserName() {
-            this.$store.commit('setUsername', this.username);
-            localStorage.setItem('username', this.username);
-        },
+        
       
         
   

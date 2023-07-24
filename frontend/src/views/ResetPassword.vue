@@ -66,7 +66,7 @@ export default {
         },
        
         
-        submitForm() {
+        async submitForm() {
             this.errors = []
 
             if (this.email === '') {
@@ -75,30 +75,43 @@ export default {
 
 
             if (!this.errors.length) {
-                const formData = {
-                    email: this.email,
+                const config = {
+                    headers:{
+                        'Content-Type': 'application/json'
+                    }
                 }
+                const email = this.email;
+                const body = JSON.stringify({ email })
                 
-                axios
-                .post('/api/v1/accounts/reset_password/', formData)
-                .then((response) => {
-                    toast({
-                    message: 'If you have an account with us, please check your email for the link!',
-                    type: 'is-success',
-                    dismissible: true,
-                    pauseOnHover: true,
-                    position: 'bottom-right',
-                    });
-                })
-                .catch((error) => {
-                   
-                    this.errors.push(error);
-                    console.log(JSON.stringify(error))
-                    
-                })
+                axios.defaults.withCredentials = true;
+                axios.defaults.headers.common = {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken' : this.getCookie('csrftoken')
+                };
 
-            }
-        }, 
+
+                axios.post('/api/v1/users/reset_password/', body, config)
+                .then(response => {
+                    
+                    console.log(response)
+                    this.$router.push('/reset-password-done')
+                })
+                .catch(error => {
+                    if (error.response) {
+                        for (const property in error.response.data) {
+                            this.errors.push(`${property}: ${error.response.data[property]}`)
+                        }
+
+                        console.log(JSON.stringify(error.response.data))
+                    } else if (error.message) {
+                        this.errors.push('Something went wrong. Please try again')
+                        
+                        console.log(JSON.stringify(error))
+                    }
+                })
+                    
+            }           
+        }
         
       
         
