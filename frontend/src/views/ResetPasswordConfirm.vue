@@ -54,7 +54,7 @@ export default {
         document.title = 'Reset Password Confirm | d-commerce'
     },
     methods: {
-        submitForm() {
+        async submitForm() {
             this.errors = []
 
             if (this.password === '') {
@@ -80,7 +80,7 @@ export default {
                
                 const body = JSON.stringify({ uid, token, new_password, re_new_password })
                 console.log(body)
-                axios
+                await axios
                     .post("/api/v1/users/reset_password_confirm/", body, config)
                     .then(response => {
                         toast({

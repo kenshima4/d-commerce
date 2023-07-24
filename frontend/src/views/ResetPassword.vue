@@ -90,7 +90,7 @@ export default {
                 };
 
 
-                axios.post('/api/v1/users/reset_password/', body, config)
+                await axios.post('/api/v1/users/reset_password/', body, config)
                 .then(response => {
                     
                     console.log(response)
