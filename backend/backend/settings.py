@@ -71,8 +71,7 @@ INSTALLED_APPS = [
     'djoser',
 
     'product',
-    'order',
-    'email_app'
+    'order'
 ]
 
 
