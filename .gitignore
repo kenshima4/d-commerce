@@ -143,7 +143,6 @@ GitHub.sublime-settings
 .DS_Store
 
 frontend/dist
-frontend/public
 
 # Log files
 frontend/npm-debug.log*
