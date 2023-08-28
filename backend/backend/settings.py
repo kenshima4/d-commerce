@@ -12,7 +12,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from django.urls import reverse
-
+import environ
+# reading .env file
+env = environ.Env()
+environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_URL = 'http://127.0.0.1:8080'
@@ -24,7 +27,7 @@ SITE_NAME = 'd-commerce'
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-1z1=&mfysp%pklgh@x+^_j3+p5)x+zm@va36wc9eq0z=7r3u7z'
 
-STRIPE_SECRET_KEY = 'sk_test_51NH4LnIIOIhiNEiGlcpsukLE5pi6Me9zYOhTf1uVP4ux7WgCXyR5QG9b6Yzfgm6qB4Agl8ZcQwZ7RN2rKIex04nk00kF97Aeok'
+STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -45,8 +48,13 @@ CSRF_COOKIE_HTTPONLY = False
 # SESSION_COOKIE_SAMESITE = 'None'
 # CORS_ALLOW_CREDENTIALS = True
 
-EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-EMAIL_FILE_PATH = BASE_DIR / 'emails'
+GMAIL_APP_PASSWORD = env("GMAIL_APP_PASSWORD")
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'dcommerce.online@gmail.com'
+EMAIL_HOST_PASSWORD = GMAIL_APP_PASSWORD
 
 
 
@@ -71,8 +79,7 @@ INSTALLED_APPS = [
     'djoser',
 
     'product',
-    'order',
-    'email_app'
+    'order'
 ]
 
 
