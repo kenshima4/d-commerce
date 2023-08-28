@@ -10,6 +10,15 @@
 1. Clone Repo:  
 ```git clone git@github.com:kenshima4/d-commerce.git```
 
+### Setup Secrets
+1. In the same directory as settings.py create a .env file.
+2. Create the following secrets:
+```
+GMAIL_APP_PASSWORD=gmail-password-here
+STRIPE_SECRET_KEY=stripe-secret-key-here
+```
+Note: The gmail app password and stripe secret key need to be created.
+
 ### Run App
 1. Run Python server (in one terminal):
 - ```cd backend```
