@@ -11,11 +11,13 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from django.urls import reverse
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
+BASE_URL = 'http://127.0.0.1:8080'
+DOMAIN = '127.0.0.1:8080'
+SITE_NAME = 'd-commerce'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -26,10 +28,34 @@ STRIPE_SECRET_KEY = 'sk_test_51NH4LnIIOIhiNEiGlcpsukLE5pi6Me9zYOhTf1uVP4ux7WgCXy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
+
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8080',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://127.0.0.1:8080',
+]
+
+CSRF_COOKIE_HTTPONLY = False
+
+# SESSION_COOKIE_SAMESITE = 'None'
+# CORS_ALLOW_CREDENTIALS = True
+
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = BASE_DIR / 'emails'
+
 
 
 # Application definition
+DJOSER = {
+    'PASSWORD_RESET_CONFIRM_URL': 'api/v1/users/reset_password_confirm/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_RETYPE' : True,
+    'SERIALIZERS': {},
+}
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -45,19 +71,17 @@ INSTALLED_APPS = [
     'djoser',
 
     'product',
-    'order'
+    'order',
+    'email_app'
 ]
 
-CORS_ALLOWED_ORIGINS =[
-    'http://localhost:8000',
-    'http://localhost:8080' #frontend url
-]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',

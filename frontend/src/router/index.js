@@ -9,6 +9,10 @@ import Search from '../views/Search.vue'
 import Cart from '../views/Cart.vue'
 import SignUp from '../views/SignUp.vue'
 import Login from '../views/Login.vue'
+import ResetPassword from '../views/ResetPassword.vue'
+import ResetPasswordConfirm from '../views/ResetPasswordConfirm.vue'
+import ResetPasswordDone from '../views/ResetPasswordDone.vue'
+import ChangePassword from '../views/ChangePassword.vue'
 import MyAccount from '../views/MyAccount.vue'
 import Checkout from '../views/Checkout.vue'
 import Success from '../views/Success.vue'
@@ -35,6 +39,31 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/reset-password',
+    name: 'ResetPassword',
+    component: ResetPassword
+  },
+  {
+    path: '/reset-password-done',
+    name: 'ResetPasswordDone',
+    component: ResetPasswordDone
+  },
+  {
+    path: '/api/v1/users/reset_password_confirm/:uid/:token',
+    name: 'ResetPasswordConfirm',
+    component: ResetPasswordConfirm,
+    props: true, // Enables passing route parameters as component props
+  },
+
+  {
+    path: '/change-password',
+    name: 'ChangePassword',
+    component: ChangePassword,
+    meta:{
+      requireLogin:true
+    }
   },
   {
     path: '/my-account',

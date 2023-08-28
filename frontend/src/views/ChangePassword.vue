@@ -2,27 +2,12 @@
     <div class="page-sign-up">
         <div class="columns">
             <div class="column is-4 is-offset-4">
-                <h1 class="title text-center">Sign Up</h1>
+                <h1 class="title text-center">Change Password</h1>
+                
                 <!-- prevent form submit from sending to server -->
                 <form @submit.prevent="submitForm">
-                    <div class="field">
-                        <label>Username</label>
-                        <div class="control">
-                            <!-- v-model for two-way data binding between template value
-                                 and data property value-->
-                            <input type="text" class="input" v-model="username">
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label>Email</label>
-                        <div class="control">
-                            <!-- v-model for two-way data binding between template value
-                                 and data property value-->
-                            <input type="email" class="input" v-model="email">
-                        </div>
-                    </div>
-
+                    <p>Hello {{ username }}, please change your password below. </p>
+                    
                     <div class="field">
                         <label>Password</label>
                         <div class="control">
@@ -43,7 +28,7 @@
 
                     <div class="field">
                         <div class="control">
-                            <button class="button is-dark">Sign up</button>
+                            <button class="button is-dark">Change Password</button>
                         </div>
                     </div>
                 </form>
@@ -58,7 +43,7 @@ import axios from 'axios'
 import { toast } from 'bulma-toast'
 
 export default {
-    name: 'SignUp',
+    name: 'ChangePassword',
     data(){
         return {
             username: '',
@@ -69,19 +54,12 @@ export default {
         }
     },
     mounted(){
-        document.title = 'Sign Up | d-commerce'
+        document.title = 'Change Password | d-commerce'
     },
     methods: {
         submitForm() {
             this.errors = []
 
-            if (this.username === '') {
-                this.errors.push('The username is missing')
-            }
-
-            if (this.email === '') {
-                this.errors.push('The email is missing')
-            }
             if (this.password === '') {
                 this.errors.push('The password is too short')
             }
@@ -92,47 +70,43 @@ export default {
 
             if (!this.errors.length) {
                 const formData = {
-                    username: this.username,
-                    email: this.email,
+                    username: localStorage.getItem('username'),
                     password: this.password
                 }
 
                 axios
-                    .post("/api/v1/users/", formData)
+                    .post("/api/v1/accounts/change_password/", formData)
                     .then(response => {
                         toast({
-                            message: 'Account created, please login!',
+                            message: 'Password successfully changed! Please login',
                             type: 'is-success',
                             dismissible: true,
                             pauseOnHover: true,
-                            duration: 2000,
+                            duration: 3000,
                             position: 'bottom-right',
                         })
 
                         this.$router.push('/login')
                     })
-                    .catch(error => {
-                        if (error.response) {
-                            for (const property in error.response.data) {
-                                this.errors.push(`${property}: ${error.response.data[property]}`)
-                            }
-
-                            console.log(JSON.stringify(error.response.data))
-                        } else if (error.message) {
-                            this.errors.push(JSON.stringify(error));
-                        }
+                    .catch((error) => {
+                   
+                        this.errors.push(error);
+                        console.log(JSON.stringify(error))
+                   
                     })
 
-                    this.updateUserName()
+                  
             }
         },
-        updateUserName() {
-            this.$store.commit('setUsername', this.username);
-            localStorage.setItem('username', this.username);
-        },
+        
       
         
   
+    },
+    computed: {
+        username: state => {
+            return localStorage.getItem('username'); // Retrieve the username from local storage
+        }
     }
 }
 </script>

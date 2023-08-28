@@ -2,7 +2,7 @@
     <div class="page-sign-up">
         <div class="columns">
             <div class="column is-4 is-offset-4">
-                <h1 class="title text-center">Login</h1>
+                <h1 class="title has-text-centered">Login</h1>
                 <!-- prevent form submit from sending to server -->
                 <form @submit.prevent="submitForm">
                     <div class="field">
@@ -32,6 +32,19 @@
                             <button class="button is-dark">Login</button>
                         </div>
                     </div>
+
+                    <div class="content has-text-centered">
+                        <p>Forgot your password? <router-link to="/reset-password">
+                            <strong>Reset Password</strong></router-link>
+                        </p>
+
+                        <p>Don't have an account? <router-link to="/sign-up">
+                            <strong>Sign Up</strong></router-link>
+                        </p>
+
+
+                    </div>
+                    
                 </form>
             </div>
             
@@ -96,7 +109,6 @@ export default {
                 this.updateUserName()
         },
         updateUserName() {
-            this.$store.commit('username', this.username);
             localStorage.setItem('username', this.username);
         },
         
@@ -105,3 +117,10 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.button{
+  width:100%;
+}
+
+</style>
